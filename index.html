@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Grupo 4</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Carrito de Compras - Grupo 4</h1>
+        
+        <form>
+            <div class="form-group">
+                <label for="nombreCliente">Nombre del Cliente:</label>
+                <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre del cliente">
+            </div>
+            <div class="form-group">
+                <label for="rutCliente">RUT (opcional):</label>
+                <input type="text" class="form-control" id="rutCliente" placeholder="RUT del cliente">
+            </div>
+            <div class="form-group">
+                <label for="producto">Seleccione un producto:</label>
+                <select class="form-control" id="producto">
+                    <option value="Pelota">Pelota</option>
+                    <option value="Oso peluche">Oso de Peluche</option>
+                    <option value="Dardos">Dardos</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="agregarAlCarrito()">Agregar al Carrito</button>
+        </form>
+        
+        <h2>Carrito de Compras</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Nombre del Cliente</th>
+                    <th>RUT del Cliente</th>
+                    <th>Imagen</th>
+                </tr>
+            </thead>
+            <tbody id="carritoBody">
+               
+            </tbody>
+        </table>
+        
+       
+        <h3>Total: $ <span id="totalPrecio">0</span> </h3>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        function agregarAlCarrito() {
+            var productoSeleccionado = document.getElementById("producto").value;
+            var precioProducto = obtenerPrecioProducto(productoSeleccionado);
+            var imagenProducto = obtenerImagenProducto(productoSeleccionado);
+            var nombreCliente = document.getElementById("nombreCliente").value;
+            var rutCliente = document.getElementById("rutCliente").value;
+            
+            // Si no se proporciona un RUT, establece "Consumidor Final" como valor predeterminado
+            if (rutCliente === "") {
+                rutCliente = "Consumidor Final";
+            }
+            
+            var carritoBody = document.getElementById("carritoBody");
+            var newRow = carritoBody.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            
+            cell1.innerHTML = productoSeleccionado;
+            cell2.innerHTML = "$" + precioProducto;
+            cell3.innerHTML = nombreCliente;
+            cell4.innerHTML = rutCliente;
+            cell5.innerHTML = `<img src="${imagenProducto}" alt="${productoSeleccionado}" style="max-width: 50px; max-height: 50px;">`;
+            
+            var totalPrecio = parseFloat(document.getElementById("totalPrecio").innerText);
+            totalPrecio += precioProducto;
+            document.getElementById("totalPrecio").innerText = totalPrecio;
+        }
+
+        function obtenerPrecioProducto(producto) {
+            var precios = {
+                "Pelota": 1000,
+                "Oso peluche": 2000,
+                "Dardos": 1500
+            };
+            return precios[producto];
+        }
+
+        function obtenerImagenProducto(producto) {
+            var imagenes = {
+                "Pelota": "Pelota.jpg",
+                "Oso peluche": "Oso.jpeg",
+                "Dardos": "Dardos.jpg"
+            };
+            return imagenes[producto];
+        }
+    </script>
+</body>
+</html>
